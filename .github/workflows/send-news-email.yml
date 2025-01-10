@@ -36,6 +36,6 @@ jobs:
           body: |
             <h2>Berita Terbaru di Bidang Teknologi:</h2>    
             <ul>    
-              ${{ env.news | replace("\n", "<li>") | replace(" - Gambar: ", "</li><li>Gambar: <img src='") | replace(")", "' /></li>") }}    
+              ${{ env.news }}    
             </ul>
           priority: normal
