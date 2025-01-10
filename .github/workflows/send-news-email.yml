@@ -19,7 +19,7 @@ jobs:
           response=$(curl -s "http://api.mediastack.com/v1/news?access_key=41b27600ad3b2fa9b947affa0e09bb36&categories=technology&languages=en")  
             
           # Mengambil judul, deskripsi, dan URL berita  
-          news=$(echo $response | jq -r '.data[] | "<li>$$.title): $$.description) - <a href=\"$$.url)\">Read more</a></li>"' | join("<br>"))  
+          news=$(echo $response | jq -r '.data[] | "<li>$$.title): $$.description) - <a href=\"$$.url)\">Read more</a></li>"' | tr '\n' '<br>')  
           echo "news=$news" >> $GITHUB_ENV
 
       - name: Send Email
