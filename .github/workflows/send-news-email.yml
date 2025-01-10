@@ -24,7 +24,7 @@ jobs:
           echo "news=$news" >> $GITHUB_ENV
 
           # Mengambil gambar berita
-          images=$(echo $response | jq -r '.data | map(.image) | join(", ")')
+          images=$(echo $response | jq -r '.data | map(.image // "Tidak ada gambar") | join(", ")')
           echo "images=$images" >> $GITHUB_ENV
 
       - name: Send mail
