@@ -1,8 +1,8 @@
 name: Send News Email
 
 on:
-  schedule:
-    - cron: '0 * * * *' # Ini akan menjalankan pekerjaan setiap jam
+  # schedule:
+  #   - cron: '0 * * * *' # Ini akan menjalankan pekerjaan setiap jam
 
 jobs:
   send_email:
