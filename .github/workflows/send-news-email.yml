@@ -15,11 +15,11 @@ jobs:
       - name: Fetch Technology News
         id: fetch_news
         run: |
-          # Mengambil berita dari API dan menyimpannya dalam file news.json
-          curl -s "http://api.mediastack.com/v1/news?access_key=41b27600ad3b2fa9b947affa0e09bb36&categories=technology&languages=en" -o news.json        
+          # Mengambil berita dari API dan menyimpannya dalam file news.json  
+          curl -s "http://api.mediastack.com/v1/news?access_key=41b27600ad3b2fa9b947affa0e09bb36&categories=technology&languages=en" -o news.json          
 
-          # Mengambil judul, deskripsi, dan URL berita
-          news=$(cat news.json | jq -r '.data | map("$$.title): $$.description) - $$.url)") | join("\n")')
+          # Mengambil judul, deskripsi, dan URL berita  
+          news=$(cat news.json | jq -r '.data | map("$$.title): $$.description) - $$.url)") | join("\n")')  
           echo "news=$news" >> $GITHUB_ENV
 
       - name: Send Email
@@ -34,7 +34,7 @@ jobs:
           to: aessaputra@yahoo.com
           from: 'Breaking News <${{ secrets.MAIL_USERNAME }}>'
           html_body: |
-            <h2>Berita Terbaru di Bidang Teknologi:</h2>        
-            <ul>        
-              ${{ env.news }}        
+            <h2>Berita Terbaru di Bidang Teknologi:</h2>          
+            <ul>          
+              ${{ env.news }}          
             </ul>
