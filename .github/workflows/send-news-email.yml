@@ -15,10 +15,17 @@ jobs:
       - name: Fetch Technology News
         id: fetch_news
         run: |
-          curl -s "http://api.mediastack.com/v1/news?access_key=41b27600ad3b2fa9b947affa0e09bb36&categories=technology&languages=en" -o news.json        
-          # Mengambil judul, deskripsi, URL, dan gambar berita        
-          echo "news=$(cat news.json | jq -r '.data | map(\"$$.title): $$.description // \"Tidak ada deskripsi\") - $$.url) - Gambar: $$.image // \"Tidak ada gambar\")\") | join(\"\\n\")')" >> $GITHUB_ENV        
-          echo "images=$(cat news.json | jq -r '.data | map(.image) | join(\", \"))')" >> $GITHUB_ENV
+          # Mengambil berita dari API
+          response=$(curl -s "http://api.mediastack.com/v1/news?access_key=41b27600ad3b2fa9b947affa0e09bb36&categories=technology&languages=en")
+          echo "Response: $response"  # Untuk debugging
+
+          # Mengambil judul, deskripsi, URL, dan gambar berita
+          news=$(echo $response | jq -r '.data | map("$$.title): $$.description // \"Tidak ada deskripsi\") - $$.url) - Gambar: $$.image // \"Tidak ada gambar\")") | join("\n")')
+          echo "news=$news" >> $GITHUB_ENV
+
+          # Mengambil gambar berita
+          images=$(echo $response | jq -r '.data | map(.image) | join(", ")')
+          echo "images=$images" >> $GITHUB_ENV
 
       - name: Send mail
         uses: dawidd6/action-send-mail@v4
