@@ -1,0 +1,38 @@
+name: Send News Email
+
+on:
+  schedule:
+    - cron: '0 * * * *' # Ini akan menjalankan pekerjaan setiap jam
+
+jobs:
+  send_email:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Fetch Technology News
+        id: fetch_news
+        run: |
+          curl -s "http://api.mediastack.com/v1/news?access_key=41b27600ad3b2fa9b947affa0e09bb36&categories=technology&languages=en" -o news.json  
+          # Mengambil judul, deskripsi, URL, dan gambar berita  
+          echo "::set-output name=news::$(cat news.json | jq -r '.data | map("$$.title): $$.description) - $$.url) - Gambar: $$.image)") | join("\n")')"  
+          echo "::set-output name=images::$(cat news.json | jq -r '.data | map(.image) | join(", ")')"
+
+      - name: Send mail
+        uses: dawidd6/action-send-mail@v4
+        with:
+          connection_url: ${{ secrets.MAIL_CONNECTION }}
+          server_address: smtp-relay.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: Berita Terbaru Teknologi
+          to: aessaputra@yahoo.com
+          from: Breaking News <${{ secrets.MAIL_USERNAME }}>
+          content_type: text/html
+          body: |
+            <h2>Berita Terbaru di Bidang Teknologi:</h2>  
+            <ul>  
+              ${{ steps.fetch_news.outputs.news | replace("\n", "<li>") | replace(" - Gambar: ", "</li><li>Gambar: <img src='") | replace(")", "' /></li>") }}  
+            </ul>
+          priority: normal
