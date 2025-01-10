@@ -1,26 +1,22 @@
-name: Send News Email
+name: Email Advice
 
 on:
   push:
     branches:
       - main
-  # schedule:
-  #   - cron: '0 * * * *' # Ini akan menjalankan pekerjaan setiap jam
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
   send_email:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Fetch Technology News
-        id: fetch_news
+      - name: Get Advice
+        id: get_advice
         run: |
-          # Mengambil berita dari API
-          response=$(curl -s "http://api.mediastack.com/v1/news?access_key=41b27600ad3b2fa9b947affa0e09bb36&categories=technology&languages=en")  
-            
-          # Mengambil judul, deskripsi, dan URL berita  
-          news=$(echo $response | jq -r '.data[] | "<li>$$.title): $$.description) - <a href=\"$$.url)\">Read more</a></li>"' | tr '\n' '<br>')  
-          echo "news=$news" >> $GITHUB_ENV
+          response=$(curl -s https://api.adviceslip.com/advice)                 
+          advice=$(echo $response | jq -r '.slip.advice')      
+          echo "advice=$advice" >> $GITHUB_ENV
 
       - name: Send Email
         uses: dawidd6/action-send-mail@v4
@@ -30,11 +26,8 @@ jobs:
           secure: true
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: 'Berita Terbaru Teknologi'
+          subject: 'Advice of the Day'
           to: aessaputra@yahoo.com
-          from: 'Breaking News <${{ secrets.MAIL_USERNAME }}>'
           html_body: |
-            <h2>Berita Terbaru di Bidang Teknologi:</h2>          
-            <ul>          
-              ${{ env.news }}          
-            </ul>
+            <h3>🗣️ Advice</h3>      
+            <p style="font-style: italic; font-size: 18px; color: #333; margin: 20px 0; border-left: 4px solid #BFA76D; padding-left: 15px; line-height: 1.5;">"${{ env.advice }}"<p>
