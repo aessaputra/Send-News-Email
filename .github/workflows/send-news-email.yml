@@ -26,8 +26,9 @@ jobs:
           secure: true
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: 'Advice of the Day'
+          subject: 'Advice'
           to: aessaputra@yahoo.com
+          from: 'Advice'
           html_body: |
-            <h3>🗣️ Advice</h3>      
+            <h3>🗣️ Saran</h3>      
             <p style="font-style: italic; font-size: 18px; color: #333; margin: 20px 0; border-left: 4px solid #BFA76D; padding-left: 15px; line-height: 1.5;">"${{ env.advice }}"<p>
