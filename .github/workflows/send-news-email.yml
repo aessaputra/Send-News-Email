@@ -15,9 +15,9 @@ jobs:
       - name: Fetch Technology News
         id: fetch_news
         run: |
-          curl -s "http://api.mediastack.com/v1/news?access_key=41b27600ad3b2fa9b947affa0e09bb36&categories=technology&languages=en" -o news.json      
-          # Mengambil judul, deskripsi, URL, dan gambar berita      
-          echo "news=$(cat news.json | jq -r '.data | map("$$.title): $$.description) - $$.url) - Gambar: $$.image)") | join("\n")')" >> $GITHUB_ENV      
+          curl -s "http://api.mediastack.com/v1/news?access_key=41b27600ad3b2fa9b947affa0e09bb36&categories=technology&languages=en" -o news.json        
+          # Mengambil judul, deskripsi, URL, dan gambar berita        
+          echo "news=$(cat news.json | jq -r '.data | map("$$.title): $$.description) - $$.url) - Gambar: $$.image)") | join("\n")')" >> $GITHUB_ENV        
           echo "images=$(cat news.json | jq -r '.data | map(.image) | join(", "))' >> $GITHUB_ENV
 
       - name: Send mail
@@ -34,8 +34,8 @@ jobs:
           from: Breaking News <${{ secrets.MAIL_USERNAME }}>
           content_type: text/html
           body: |
-            <h2>Berita Terbaru di Bidang Teknologi:</h2>      
-            <ul>      
-              ${{ env.news }}      
+            <h2>Berita Terbaru di Bidang Teknologi:</h2>        
+            <ul>        
+              ${{ env.news }}        
             </ul>
           priority: normal
