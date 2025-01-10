@@ -32,8 +32,7 @@ jobs:
           subject: Berita Terbaru Teknologi
           to: aessaputra@yahoo.com
           from: Breaking News <${{ secrets.MAIL_USERNAME }}>
-          content_type: text/html
-          body: |
+          html_body: |
             <h2>Berita Terbaru di Bidang Teknologi:</h2>        
             <ul>        
               ${{ env.news }}        
