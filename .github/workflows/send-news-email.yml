@@ -1,6 +1,9 @@
 name: Send News Email
 
 on:
+  push:
+    branches:
+      - main
   # schedule:
   #   - cron: '0 * * * *' # Ini akan menjalankan pekerjaan setiap jam
 
