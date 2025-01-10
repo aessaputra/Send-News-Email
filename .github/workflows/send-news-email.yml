@@ -18,7 +18,7 @@ jobs:
           curl -s "http://api.mediastack.com/v1/news?access_key=41b27600ad3b2fa9b947affa0e09bb36&categories=technology&languages=en" -o news.json        
           # Mengambil judul, deskripsi, URL, dan gambar berita        
           echo "news=$(cat news.json | jq -r '.data | map(\"$$.title): $$.description // \"Tidak ada deskripsi\") - $$.url) - Gambar: $$.image // \"Tidak ada gambar\")\") | join(\"\\n\")')" >> $GITHUB_ENV        
-          echo "images=$(cat news.json | jq -r '.data | map(.image) | join(\", \"))" >> $GITHUB_ENV
+          echo "images=$(cat news.json | jq -r '.data | map(.image) | join(\", \"))')" >> $GITHUB_ENV
 
       - name: Send mail
         uses: dawidd6/action-send-mail@v4
