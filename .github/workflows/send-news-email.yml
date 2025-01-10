@@ -15,11 +15,11 @@ jobs:
       - name: Fetch Technology News
         id: fetch_news
         run: |
-          # Mengambil berita dari API
-          response=$(curl -s "http://api.mediastack.com/v1/news?access_key=41b27600ad3b2fa9b947affa0e09bb36&categories=technology&languages=en")
+          # Mengambil berita dari API dan menyimpannya dalam file news.json
+          curl -s "http://api.mediastack.com/v1/news?access_key=41b27600ad3b2fa9b947affa0e09bb36&categories=technology&languages=en" -o news.json        
 
           # Mengambil judul, deskripsi, dan URL berita
-          news=$(echo $response | jq -r '.data | map("$$.title): $$.description // \"Tidak ada deskripsi\") - $$.url)") | join("\n")')
+          news=$(cat news.json | jq -r '.data | map("$$.title): $$.description // \"Tidak ada deskripsi\") - $$.url)") | join("\n")')
           echo "news=$news" >> $GITHUB_ENV
 
       - name: Send Email
