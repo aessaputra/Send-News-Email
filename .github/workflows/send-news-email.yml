@@ -27,7 +27,7 @@ jobs:
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: 'Wejangan'
-          to: h6dgqkrq3@mozmail.com
+          to: 4r3s@duck.com
           from: 'Belalang Tua'
           html_body: |
             <h3 style="font-family: Arial, sans-serif; color: #4A4A4A;">👴 Wejangan</h3>      
